@@ -249,7 +249,7 @@ Input:
 
 Output:
 
-[pred, resultmain]
+`[pred, resultmain]`
 - pred: orientations output by PyEMEBSDDI, 2darray, float, (n,4);
 - resultmain: dot products for each orientation prediction, 1darray, float, (n,);
 

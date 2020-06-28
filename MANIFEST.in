@@ -1,7 +1,0 @@
-include README.md
-include LICENSE
-include requirements.txt
-include PyEMEBSDDI_wrapper EMsoft_DIR.txt
-include PyEMEBSDDI_wrapper README.md
-include PyEMEBSDDI_wrapper LICENSE
-include PyEMEBSDDI_wrapper requirements.txt
