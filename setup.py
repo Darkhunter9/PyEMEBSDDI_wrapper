@@ -3,12 +3,42 @@ See:
 https://packaging.python.org/en/latest/distributing.html
 https://github.com/pypa/sampleproject
 
+BSD 3-Clause License
+
+Copyright (c) 2020, Zihao Ding, Marc De Graef Research Group/Carnegie Mellon University
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice, this
+   list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation
+   and/or other materials provided with the distribution.
+
+3. Neither the name of the copyright holder nor the names of its
+   contributors may be used to endorse or promote products derived from
+   this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
 Three ways to install PyEMEBSDDI_wrapper package:
 With downloaded package:
-(1) python3 setup.py --EMsoftDIR="abs/dir/to/EMsoft"
-(2) pip install . --install-option="--EMsoftDIR=abs/dir/to/EMsoft"
+(1) python3 setup.py --EMsoftBinDIR="abs/dir/to/EMsoft/Bin"
+(2) pip install . --install-option="--EMsoftBinDIR=abs/dir/to/EMsoft/Bin"
 Without downloaded package:
-(3) pip install PyEMEBSDDI_wrapper --install-option="--EMsoftDIR=abs/dir/to/EMsoft"
+(3) pip install PyEMEBSDDI_wrapper --install-option="--EMsoftBinDIR=abs/dir/to/EMsoft/Bin"
 """
 
 # Always prefer setuptools over distutils
@@ -25,38 +55,48 @@ class InstallCommand(install):
     user_options = install.user_options + [
         # ('someopt', None, None), # a 'flag' option
         #('someval=', None, '<description for this custom option>') # an option that takes a value
-        ('EMsoftDIR=', None, 'directory of EMsoft folder.'),
+        ('EMsoftBinDIR=', None, 'directory of EMsoft Bin folder.'),
     ]                                      
 
     def initialize_options(self):
         install.initialize_options(self)
         # self.someopt = None
         # self.someval = None
-        self.EMsoftDIR = None
+        self.EMsoftBinDIR = None
 
     def finalize_options(self):
-        print("Directory of EMsoft is", self.EMsoftDIR)
+        print("Directory of EMsoft Bin folder is:", self.EMsoftBinDIR)
         install.finalize_options(self)
 
     def run(self):
-        with open(path.join(here, 'PyEMEBSDDI_wrapper', 'EMsoft_DIR.txt'), mode='w') as f:
-            f.write(path.join(self.EMsoftDIR, 'Bin'))
+        if not self.EMsoftBinDIR:
+            raise ValueError("EMsoftBinDIR not input: Please use pip install PyEMEBSDDI_wrapper --install-option='--EMsoftBinDIR=abs/dir/to/EMsoft/Bin'")
+        elif not path.exists(self.EMsoftBinDIR):
+            raise ValueError('EMsoftBinDIR does not exist: %s' % self.EMsoftBinDIR)
+        elif path.exists(path.join(self.EMsoftBinDIR, 'PyEMEBSDDI.so')):
+            with open(path.join(here, 'PyEMEBSDDI_wrapper', 'EMsoft_DIR.txt'), mode='w') as f:
+                f.write(self.EMsoftBinDIR)
+        elif path.exists(path.join(self.EMsoftBinDIR, 'Bin', 'PyEMEBSDDI.so')):
+            with open(path.join(here, 'PyEMEBSDDI_wrapper', 'EMsoft_DIR.txt'), mode='w') as f:
+                f.write(path.join(self.EMsoftBinDIR, 'Bin'))
+        else:
+            raise ValueError('PyEMEBSDDI.so does not exist under EMsoftBinDIR: %s' % self.EMsoftBinDIR)
         install.run(self)
 
 
-# solve EMsoft_DIR using sys.argv
-# prepared for python3 setup.py install --EMsoft_DIR dir
+# solve EMsoftBinDIR using sys.argv
+# prepared for python3 setup.py install --EMsoftBinDIR dir
 # not required if rewrite install func
 
-# if '--EMsoftDIR' in sys.argv:
-#     index = sys.argv.index('--EMsoftDIR')
+# if '--EMsoftBinDIR' in sys.argv:
+#     index = sys.argv.index('--EMsoftBinDIR')
 #     sys.argv.pop(index)
-#     EMsoftDIR = sys.argv.pop(index)
+#     EMsoftBinDIR = sys.argv.pop(index)
 #     with open(path.join(here, 'PyEMEBSDDI_wrapper', 'EMsoft_DIR.txt'), mode='w') as f:
-#         f.write(path.join(EMsoftDIR, 'Bin'))
+#         f.write(EMsoftBinDIR)
 
 # Get the long description from the README file
-with open(path.join(here, 'Readme.md'), encoding='utf-8') as f:
+with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 # Arguments marked as "Required" below must be included for upload to PyPI.
@@ -82,7 +122,7 @@ setup(
     # For a discussion on single-sourcing the version across setup.py and the
     # project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='0.1',  # Required
+    version='0.4',  # Required
 
     # This is a one-line description or tagline of what your project does. This
     # corresponds to the "Summary" metadata field:
@@ -198,8 +238,11 @@ setup(
     # If there are data files included in your packages that need to be
     # installed, specify them here.
     package_data={  # Optional
-        'PyEMEBSDDI_wrapper': ['EMsoft_DIR.txt'],
+        '': ['README.md', 'LICENSE', 'requirements.txt'],
+        'PyEMEBSDDI_wrapper': ['EMsoft_DIR.txt', 'README.md', 'LICENSE', 'requirements.txt'],
     },
+
+    include_package_data=True,
 
     cmdclass={'install': InstallCommand},
 

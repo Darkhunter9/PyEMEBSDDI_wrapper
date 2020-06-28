@@ -1,0 +1,120 @@
+ &PyEMEBSDRefinedata
+! template file for the PyEMEBSDRefine program
+!
+! In PyEMEBSDDI, following params are used:
+! ipar, fpar, and spar variables used in this wrapper routine:
+! integers
+! ipar(1) : nx  = (numsx-1)/2
+! ipar(4) : totnum_el
+! ipar(5) : multiplier
+! ipar(10): SpaceGroupNumber
+! ipar(12): numEbins
+! ipar(17): npx
+! ipar(18): nthreads
+! ipar(19): numx of detector pixels
+! ipar(20): numy of detector pixels
+! ipar(26): ipf_wd
+! ipar(27): ipf_ht
+! ipar(28): nregions
+! ipar(29): maskpattern
+! ipar(37): numexptsingle  (multiple of 16; number of expt patterns in one dot product chunk)
+! ipar(38): numdictsingle  (multiple of 16; number of dict patterns in one dot product chunk)
+! ipar(40): totnumexpt
+! ipar(41): numexptsingle*ceiling(float(totnumexpt)/float(numexptsingle))  
+! ipar(42): 16*ceiling(float(numsx*numsy)/16.0)
+! ipar(44): nvariants (number of variants for refinement wrapper)
+
+! floats
+! fpar(1) : sig
+! fpar(2) : omega
+! fpar(3) : EkeV
+! fpar(4) : Ehistmin
+! fpar(5) : Ebinsize
+! fpar(15): pattern center x
+! fpar(16): pattern center y
+! fpar(17): scintillator pixel size
+! fpar(18): detector tilt angle
+! fpar(19): sample-scintillator distance
+! fpar(20): beam current
+! fpar(21): dwelltime
+! fpar(22): gamma value
+! fpar(23): maskradius
+! fpar(25): step 
+
+! no strings
+!
+! ipar(1) : nx  = (numsx-1)/2
+! will be calculated internally if h5 are passed
+! ipar(4) : totnum_el, total number of incident electrons and multiplier (to get more than 2^(31)-1 electrons)
+ totnum_el = 2000000000,
+! ipar(5) : multiplier
+ multiplier = 1,
+! ipar(10): SpaceGroupNumber
+ SpaceGroupNumber = 225,
+! ipar(12): numEbins
+! will be calculated internally if h5 are passed
+ numEbins = 11,
+! ipar(17): npx, number of pixels along x-direction of the square master pattern  (2*npx+1 = total number)
+! will be calculated internally if h5 are passed
+ npx = 500,
+! ipar(18): nthreads
+ nthreads = 40,
+! ipar(19): numx of detector pixels
+ numx = 60,
+! ipar(20): numy of detector pixels
+ numy = 60,
+! ipar(26): ipf_wd
+ ipf_wd = 151,
+! ipar(27): ipf_ht
+ ipf_ht = 186,
+! ipar(28): nregions, number of regions for adaptive histogram equalization
+ nregions = 10,
+! ipar(29): maskpattern
+ maskpattern = 0,
+! ipar(37): numexptsingle  (multiple of 16; number of expt patterns in one dot product chunk)
+ numexptsingle = 1024,
+! ipar(38): numdictsingle  (multiple of 16; number of dict patterns in one dot product chunk)
+ numdictsingle = 1024,
+! ipar(40): totnumexpt
+! will be calculated internally if patterns are passed
+ totnumexpt = 0,
+! ipar(41): numexptsingle*ceiling(float(totnumexpt)/float(numexptsingle))
+! will be calculated internally
+! ipar(42): 16*ceiling(float(numsx*numsy)/16.0)
+! will be calculated internally
+! ipar(44): nvariants (number of variants for refinement wrapper)
+! will be calculated internally if variants array is passed
+ nvariants = 0,
+
+! floats
+! fpar(1) : sig, sample tilt angle from horizontal [degrees]
+ sig = 75.7
+! fpar(2) : omega, angle between normal of sample and detector
+ omega = 0.0,
+! fpar(3) : EkeV, incident beam energy [keV]
+ EkeV = 20.0,
+! fpar(4) : Ehistmin, minimum energy to consider [keV]
+ Ehistmin = 10.0,
+! fpar(5) : Ebinsize, energy binsize [keV]
+ Ebinsize = 1.0,
+! fpar(15): pattern center x
+ xpc = 0.16213,
+! fpar(16): pattern center y
+ ypc = 12.88351,
+! fpar(17): scintillator pixel size
+ delta = 470.54,
+! fpar(18): detector tilt angle [degrees]
+ thetac = 10.0,
+! fpar(19): sample-scintillator distance [microns]
+ L = 16090.383,
+! fpar(20): beam current [nA]
+ beamcurrent = 1000.0,
+! fpar(21): dwelltime [micro s]
+ dwelltime = 1000.0,
+! fpar(22): gamma value
+ gammavalue = 0.34,
+! fpar(23): maskradius, mask radius (in pixels, AFTER application of the binning operation)
+ maskradius = 30,
+! fpar(25): step, max step size to take in homochoric space during the refinement
+ step = 0.03,
+ /
