@@ -15,7 +15,7 @@ While **PyEMEBSDDI** maintain the same arguments as original functions written i
 
 ## Source
 1. [**EMsoft**](https://github.com/EMsoft-org/EMsoft) github page;
-2. [**PyEMEBSDDI**](https://github.com/EMsoft-org/EMsoft/tree/develop/Source/EMsoftWrapperLib/DictionaryIndexing) github page (under **EMsoft**)
+2. [**PyEMEBSDDI**](https://github.com/EMsoft-org/EMsoft/tree/develop/Source/EMsoftWrapperLib/DictionaryIndexing) github page (under **EMsoft**);
 3. [**PyEMEBSDDI_wrapper**](https://github.com/Darkhunter9/PyEMEBSDDI_wrapper) github page;
 4. [**PyEMEBSDDI_wrapper**](https://pypi.org/project/PyEMEBSDDI-wrapper/) PyPI page;
 
