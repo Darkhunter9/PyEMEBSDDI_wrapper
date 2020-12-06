@@ -35,7 +35,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 Three ways to install PyEMEBSDDI_wrapper package:
 With downloaded package:
-(1) python3 setup.py --EMsoftBinDIR="abs/dir/to/EMsoft/Bin"
+(1) python3 setup.py install --EMsoftBinDIR="abs/dir/to/EMsoft/Bin"
 (2) pip install . --install-option="--EMsoftBinDIR=abs/dir/to/EMsoft/Bin"
 Without downloaded package:
 (3) pip install PyEMEBSDDI_wrapper --install-option="--EMsoftBinDIR=abs/dir/to/EMsoft/Bin"
